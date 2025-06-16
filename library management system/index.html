@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Library Management System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #f8f9fa;
+      --text-color: #000;
+      --card-bg: #fff;
+      --accent: #0d6efd;
+    }
+    body.dark-mode {
+      --bg-color: #121212;
+      --text-color: #f8f9fa;
+      --card-bg: #1f1f1f;
+      --accent: #66b2ff;
+    }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 240px;
+      height: 100%;
+      background-color: var(--card-bg);
+      padding-top: 20px;
+      border-right: 2px solid var(--accent);
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      transition: background-color 0.5s ease;
+      display: none;
+    }
+    #sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+    #sidebar a:hover {
+      background-color: var(--accent);
+      color: #fff;
+    }
+    #toggleDark {
+      margin-top: 2rem;
+    }
+    .container {
+      margin-left: 260px;
+      padding: 40px 20px;
+      transition: margin-left 0.3s ease;
+    }
+    .card {
+      background-color: var(--card-bg);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 1rem;
+      animation-duration: 1s;
+      border: none;
+      transition: background-color 0.5s ease;
+    }
+    .hidden {
+      display: none;
+    }
+    h3 {
+      border-left: 5px solid var(--accent);
+      padding-left: 12px;
+      margin-bottom: 24px;
+    }
+    .btn {
+      border-radius: 25px;
+    }
+    .form-control {
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar">
+    <a href="#" onclick="showPage('dashboard')"><i class='bx bx-home'></i>Dashboard</a>
+    <a href="#" onclick="showPage('addBook')"><i class='bx bx-book-add'></i>Add Book</a>
+    <a href="#" onclick="showPage('issueBook')"><i class='bx bx-book'></i>Issue Book</a>
+    <a href="#" onclick="showPage('returnBook')"><i class='bx bx-undo'></i>Return Book</a>
+    <a href="#" id="toggleDark" onclick="toggleDarkMode()"><i class='bx bx-moon'></i>Toggle Dark Mode</a>
+  </div>
+
+  <div class="container">
+    <div id="login" class="card p-4 animate__animated animate__backInDown">
+      <h3>Login</h3>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" class="form-control">
+      </div>
+      <button class="btn btn-primary w-100" onclick="login()">Login</button>
+    </div>
+
+    <div id="dashboard" class="hidden card p-4 animate__animated animate__fadeInUpBig">
+      <h3>Dashboard</h3>
+      <p>Welcome to the beautifully animated Library Management System Dashboard.</p>
+    </div>
+
+    <div id="addBook" class="hidden card p-4 animate__animated animate__fadeInLeftBig">
+      <h3>Add New Book</h3>
+      <div class="mb-3">
+        <label for="bookTitle" class="form-label">Title</label>
+        <input type="text" id="bookTitle" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="bookAuthor" class="form-label">Author</label>
+        <input type="text" id="bookAuthor" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="bookISBN" class="form-label">ISBN</label>
+        <input type="text" id="bookISBN" class="form-control">
+      </div>
+      <button class="btn btn-success w-100">Add Book</button>
+    </div>
+
+    <div id="issueBook" class="hidden card p-4 animate__animated animate__fadeInRightBig">
+      <h3>Issue Book</h3>
+      <div class="mb-3">
+        <label for="issueBookID" class="form-label">Book ID</label>
+        <input type="text" id="issueBookID" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="issueUserID" class="form-label">User ID</label>
+        <input type="text" id="issueUserID" class="form-control">
+      </div>
+      <button class="btn btn-warning w-100">Issue</button>
+    </div>
+
+    <div id="returnBook" class="hidden card p-4 animate__animated animate__lightSpeedInRight">
+      <h3>Return Book</h3>
+      <div class="mb-3">
+        <label for="returnBookID" class="form-label">Book ID</label>
+        <input type="text" id="returnBookID" class="form-control">
+      </div>
+      <button class="btn btn-info w-100">Return</button>
+    </div>
+  </div>
+
+  <script>
+    function showPage(id) {
+      const pages = ['login', 'dashboard', 'addBook', 'issueBook', 'returnBook'];
+      pages.forEach(page => {
+        const el = document.getElementById(page);
+        el.classList.add('hidden');
+        el.classList.remove(
+          'animate__backInDown',
+          'animate__fadeInUpBig',
+          'animate__fadeInLeftBig',
+          'animate__fadeInRightBig',
+          'animate__lightSpeedInRight'
+        );
+      });
+      const target = document.getElementById(id);
+      target.classList.remove('hidden');
+      if (id === 'login') target.classList.add('animate__backInDown');
+      if (id === 'dashboard') target.classList.add('animate__fadeInUpBig');
+      if (id === 'addBook') target.classList.add('animate__fadeInLeftBig');
+      if (id === 'issueBook') target.classList.add('animate__fadeInRightBig');
+      if (id === 'returnBook') target.classList.add('animate__lightSpeedInRight');
+    }
+
+    function login() {
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      if (user === 'admin' && pass === 'admin') {
+        alert('Login successful');
+        document.getElementById('sidebar').style.display = 'block';
+        showPage('dashboard');
+      } else {
+        alert('Invalid credentials');
+      }
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>
+
