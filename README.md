@@ -1,7 +1,7 @@
  Library Management System (HTML/CSS/JS)
 This is a lightweight, front-end-only Library Management System built using HTML, CSS (Bootstrap), JavaScript, and integrated with Animate.css and Boxicons for smooth user experience and icons.
 
-🔧 Features
+Features
 Login System
 Basic admin login form with default credentials for demo (admin/admin).
 
